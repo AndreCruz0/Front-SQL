@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export interface Product {
 	id: number;
@@ -9,7 +9,7 @@ export interface Product {
 
 export async function updateProductsBulk(products: Product[]) {
 	const response = await axios.put(
-		"http://localhost:3001/products/bulk-update",
+		'http://localhost:3001/products/bulk-update',
 		products,
 	);
 	return response.data; // { message: string }

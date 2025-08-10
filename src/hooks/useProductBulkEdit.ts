@@ -1,10 +1,10 @@
-import { handleErrorMessage } from "@/utils/errorUtils";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { handleErrorMessage } from '@/utils/errorUtils';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import {
 	type Product,
 	updateProductsBulk,
-} from "../services/updateProduct.service";
+} from '../services/updateProduct.service';
 
 export function useProductBulkEdit(selectedCategory: {
 	id?: number | string;
@@ -25,7 +25,7 @@ export function useProductBulkEdit(selectedCategory: {
 				);
 				setProducts(response.data);
 			} catch (error: unknown) {
-				console.error("Erro ao buscar produtos:", error);
+				console.error('Erro ao buscar produtos:', error);
 			}
 		}
 
@@ -37,7 +37,7 @@ export function useProductBulkEdit(selectedCategory: {
 			const copy = [...prev];
 			copy[index] = {
 				...copy[index],
-				[field]: field === "name" ? value : Number(value),
+				[field]: field === 'name' ? value : Number(value),
 			};
 			return copy;
 		});
@@ -48,7 +48,7 @@ export function useProductBulkEdit(selectedCategory: {
 			const res = await updateProductsBulk(products);
 			alert(res.message);
 		} catch (error: unknown) {
-			alert(handleErrorMessage(error) || "Erro ao atualizar produtos");
+			alert(handleErrorMessage(error) || 'Erro ao atualizar produtos');
 		}
 	}
 

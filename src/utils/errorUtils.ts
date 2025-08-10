@@ -1,5 +1,5 @@
 // utils/errorUtils.ts
-import axios from "axios";
+import axios from 'axios';
 
 export function handleErrorMessage(error: unknown): string {
 	if (axios.isAxiosError(error)) {

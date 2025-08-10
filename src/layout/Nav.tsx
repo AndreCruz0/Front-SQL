@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-import { useCategoriesStore } from "../stores/categorystore";
-import { useSelectedCategoryStore } from "../stores/categorystoreselected";
-import { useHiddenStore } from "../stores/hiddenstore";
+import { useCategoriesStore } from '../stores/categorystore';
+import { useSelectedCategoryStore } from '../stores/categorystoreselected';
+import { useHiddenStore } from '../stores/hiddenstore';
 
 interface Category {
 	id: string | number;
@@ -30,11 +30,11 @@ export default function Nav() {
 			setLoading(true);
 			try {
 				const response = await axios.get<Category[]>(
-					"http://localhost:3001/category",
+					'http://localhost:3001/category',
 				);
 				setCategories(response.data);
 			} catch (error) {
-				console.error("Erro ao buscar categorias:", error);
+				console.error('Erro ao buscar categorias:', error);
 			} finally {
 				setLoading(false);
 			}
@@ -55,7 +55,7 @@ export default function Nav() {
 							onClick={() => {
 								if (selectedCategory.id === category.id) {
 									setHidden(true);
-									setSelectedCategory({ id: "", name: "" });
+									setSelectedCategory({ id: '', name: '' });
 								} else {
 									setSelectedCategory(category);
 									if (hidden) setHidden(false);

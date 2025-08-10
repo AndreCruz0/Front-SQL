@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
 	Table,
 	TableBody,
@@ -7,11 +7,11 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
-import { useProductBulkEdit } from "../hooks/useProductBulkEdit";
-import { useSelectedCategoryStore } from "../stores/categorystoreselected";
-import { useHiddenStore } from "../stores/hiddenstore";
+import { useProductBulkEdit } from '../hooks/useProductBulkEdit';
+import { useSelectedCategoryStore } from '../stores/categorystoreselected';
+import { useHiddenStore } from '../stores/hiddenstore';
 
 export default function List() {
 	const hidden = useHiddenStore((state) => state.hidden);
@@ -54,7 +54,7 @@ export default function List() {
 											name={`name-${product.id}`}
 											value={product.name}
 											onChange={(e) =>
-												handleChange(index, "name", e.target.value)
+												handleChange(index, 'name', e.target.value)
 											}
 											required
 										/>
@@ -65,7 +65,7 @@ export default function List() {
 											type="number"
 											value={product.qty}
 											onChange={(e) =>
-												handleChange(index, "qty", e.target.value)
+												handleChange(index, 'qty', e.target.value)
 											}
 											required
 										/>
@@ -77,7 +77,7 @@ export default function List() {
 											step="0.01"
 											value={product.price}
 											onChange={(e) =>
-												handleChange(index, "price", e.target.value)
+												handleChange(index, 'price', e.target.value)
 											}
 											required
 										/>

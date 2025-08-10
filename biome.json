@@ -1,0 +1,16 @@
+{
+	"linter": {
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noConsole": "warn"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"arrowParentheses": "always"
+		}
+	}
+}

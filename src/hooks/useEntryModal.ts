@@ -3,16 +3,16 @@ import {
 	fetchProductStock,
 	fetchProducts,
 	postTransaction,
-} from "@/services/transaction.service";
+} from '@/services/transaction.service';
 // useEntryModal.ts
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function useEntryModal(setModalState: (state: null) => void) {
 	const [products, setProducts] = useState<Product[]>([]);
-	const [productId, setProductId] = useState("");
-	const [qty, setQty] = useState("");
-	const [type, setType] = useState<"entrada" | "saida">("entrada");
-	const [error, setError] = useState("");
+	const [productId, setProductId] = useState('');
+	const [qty, setQty] = useState('');
+	const [type, setType] = useState<'entrada' | 'saida'>('entrada');
+	const [error, setError] = useState('');
 
 	useEffect(() => {
 		async function loadProducts() {
@@ -20,7 +20,7 @@ export function useEntryModal(setModalState: (state: null) => void) {
 				const prods = await fetchProducts();
 				setProducts(prods);
 			} catch {
-				alert("Erro ao carregar produtos!");
+				alert('Erro ao carregar produtos!');
 			}
 		}
 		loadProducts();
@@ -28,14 +28,14 @@ export function useEntryModal(setModalState: (state: null) => void) {
 
 	async function onSubmit(e: React.FormEvent) {
 		e.preventDefault();
-		setError("");
+		setError('');
 
 		if (!productId || !qty || !type) {
-			setError("Preencha todos os campos!");
+			setError('Preencha todos os campos!');
 			return;
 		}
 
-		if (type === "saida") {
+		if (type === 'saida') {
 			try {
 				const currentStock = await fetchProductStock(Number(productId));
 				if (Number(qty) > currentStock) {
@@ -45,7 +45,7 @@ export function useEntryModal(setModalState: (state: null) => void) {
 					return;
 				}
 			} catch {
-				setError("Erro ao verificar estoque do produto.");
+				setError('Erro ao verificar estoque do produto.');
 				return;
 			}
 		}
@@ -56,10 +56,10 @@ export function useEntryModal(setModalState: (state: null) => void) {
 				qty: Number(qty),
 				type,
 			});
-			alert("Transação adicionada com sucesso!");
+			alert('Transação adicionada com sucesso!');
 			setModalState(null);
 		} catch {
-			setError("Erro ao adicionar transação!");
+			setError('Erro ao adicionar transação!');
 		}
 	}
 

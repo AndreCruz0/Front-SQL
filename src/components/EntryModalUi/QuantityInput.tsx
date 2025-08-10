@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input';
 
 interface Props {
 	value: string;
@@ -8,7 +8,9 @@ interface Props {
 export default function QuantityInput({ value, onChange }: Props) {
 	return (
 		<div>
-			<label className="block text-sm font-medium mb-1">Quantidade</label>
+			<label className="block text-sm font-medium mb-1" htmlFor="quantity">
+				Quantidade
+			</label>
 			<Input
 				type="number"
 				value={value}

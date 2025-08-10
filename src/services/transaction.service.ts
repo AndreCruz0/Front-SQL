@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export interface Product {
 	id: number;
@@ -6,7 +6,7 @@ export interface Product {
 	qty?: number;
 }
 
-const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = 'http://localhost:3001';
 
 export async function fetchProducts(): Promise<Product[]> {
 	const res = await axios.get(`${API_BASE_URL}/products`);
@@ -21,7 +21,7 @@ export async function fetchProductStock(productId: number): Promise<number> {
 export async function postTransaction(data: {
 	product_id: number;
 	qty: number;
-	type: "entrada" | "saida";
+	type: 'entrada' | 'saida';
 }) {
-	await axios.post("http://localhost:5000/transactions", data);
+	await axios.post('http://localhost:5000/transactions', data);
 }

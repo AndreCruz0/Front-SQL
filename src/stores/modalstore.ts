@@ -1,6 +1,6 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
-type ModalType = "entrada" | "saida" | null;
+type ModalType = 'entrada' | 'saida' | null;
 
 interface ModalStore {
 	modalState: ModalType;

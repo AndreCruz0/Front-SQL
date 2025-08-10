@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface Category {
 	id: string | number;
@@ -12,7 +12,7 @@ interface SelectedCategoryStore {
 
 export const useSelectedCategoryStore = create<SelectedCategoryStore>(
 	(set) => ({
-		selectedCategory: { id: "", name: "" },
+		selectedCategory: { id: '', name: '' },
 		setSelectedCategory: (category) => set({ selectedCategory: category }),
 	}),
 );

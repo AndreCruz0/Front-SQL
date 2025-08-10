@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { useModalStore } from "@/stores/modalstore";
-import ProductSelect from "../components/EntryModalUi/ProductSelect";
-import QuantityInput from "../components/EntryModalUi/QuantityInput";
-import TypeSelect from "../components/EntryModalUi/TypeSelect";
-import { useEntryModal } from "../hooks/useEntryModal";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { useModalStore } from '@/stores/modalstore';
+import ProductSelect from '../components/EntryModalUi/ProductSelect';
+import QuantityInput from '../components/EntryModalUi/QuantityInput';
+import TypeSelect from '../components/EntryModalUi/TypeSelect';
+import { useEntryModal } from '../hooks/useEntryModal';
 
 export default function EntryModal() {
 	const setModalState = useModalStore((state) => state.setModalState);
