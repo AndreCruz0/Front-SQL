@@ -15,7 +15,6 @@ export async function fetchProducts(): Promise<Product[]> {
 
 export async function fetchProductStock(productId: number): Promise<number> {
   const res = await axios.get(`${API_BASE_URL}/products/${productId}`);
-  // Supondo que o produto venha dentro de um array [produto]
   return res.data[0].qty;
 }
 

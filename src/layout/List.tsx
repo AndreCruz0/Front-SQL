@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import {
   Table,
   TableBody,
@@ -9,57 +7,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {Button} from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { useCategoryStore } from "../stores/categorystore";
 import { useHiddenStore } from "../stores/hiddenstore";
-import { updateProductsBulk } from '../services/updateProduct.service'; // criar essa função no service
+import { useProductBulkEdit } from "../hooks/useProductBulkEdit";
 
 export default function List() {
-  const hidden = useHiddenStore((state) => state.hidden);
-  const selectedCategory = useCategoryStore((state) => state.selectedCategory);
+  const hidden = useHiddenStore(state => state.hidden);
+  const selectedCategory = useCategoryStore(state => state.selectedCategory);
 
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    async function fetchProducts() {
-      if (!selectedCategory?.id) return;
-
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/products/category/${selectedCategory.id}`
-        );
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
-      }
-    }
-    fetchProducts();
-  }, [selectedCategory]);
+  const { products, handleChange, handleSubmit } = useProductBulkEdit(selectedCategory);
 
   if (hidden) return null;
 
-  function handleChange(index, field, value) {
-    setProducts((prev) => {
-      const copy = [...prev];
-      copy[index] = { ...copy[index], [field]: field === "name" ? value : Number(value) };
-      return copy;
-    });
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    try {
-      const res = await updateProductsBulk(products);
-      alert(res.message);
-    } catch (error) {
-      alert(error.message || "Erro ao atualizar produtos");
-    }
-  }
-
   return (
     <main>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
         <Table>
           <TableCaption>Produtos da categoria {selectedCategory?.name}</TableCaption>
           <TableHeader>
@@ -116,9 +84,7 @@ export default function List() {
 
         {products.length > 0 && (
           <div className="mt-4 flex justify-end">
-            <Button type="submit">
-              Atualizar todos os produtos
-            </Button>
+            <Button type="submit">Atualizar todos os produtos</Button>
           </div>
         )}
       </form>

@@ -2,7 +2,7 @@
 import {create} from "zustand";
 
 interface Category {
-  id: string;
+  id: string | number;
   name: string;
 }
 
