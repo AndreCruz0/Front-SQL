@@ -1,14 +1,12 @@
 // src/stores/categoryStore.ts
 import { create } from "zustand";
 
-
-
 interface HiddenStore {
-  hidden: boolean | null;
-  setHidden: (hidden: boolean) => void;
+	hidden: boolean | null;
+	setHidden: (hidden: boolean) => void;
 }
 
 export const useHiddenStore = create<HiddenStore>((set) => ({
-  hidden: true,
-  setHidden: (hidden) => set({ hidden: hidden }),
+	hidden: true,
+	setHidden: (hidden) => set({ hidden: hidden }),
 }));
