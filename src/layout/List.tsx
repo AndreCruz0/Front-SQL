@@ -8,13 +8,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useCategoryStore } from "../stores/categorystore";
+
+import { useSelectedCategoryStore } from "../stores/categorystoreselected";
 import { useHiddenStore } from "../stores/hiddenstore";
 import { useProductBulkEdit } from "../hooks/useProductBulkEdit";
 
 export default function List() {
-  const hidden = useHiddenStore(state => state.hidden);
-  const selectedCategory = useCategoryStore(state => state.selectedCategory);
+  const hidden = useHiddenStore((state) => state.hidden);
+  const selectedCategory = useSelectedCategoryStore((state) => state.selectedCategory);
 
   const { products, handleChange, handleSubmit } = useProductBulkEdit(selectedCategory);
 

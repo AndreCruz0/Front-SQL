@@ -1,17 +1,16 @@
-// No store de categorias
-import {create} from "zustand";
+import { create } from "zustand";
 
 interface Category {
   id: string | number;
   name: string;
 }
 
-interface CategoryStore {
-  selectedCategory: Category; 
-  setSelectedCategory: (category: Category) => void;
+interface CategoriesStore {
+  categories: Category[];
+  setCategories: (categories: Category[]) => void;
 }
 
-export const useCategoryStore = create<CategoryStore>((set) => ({
-  selectedCategory: { id: "", name: "" },
-  setSelectedCategory: (category) => set({ selectedCategory: category }),
+export const useCategoriesStore = create<CategoriesStore>((set) => ({
+  categories: [],
+  setCategories: (categories) => set({ categories }),
 }));

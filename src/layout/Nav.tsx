@@ -1,33 +1,45 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { useCategoryStore } from "../stores/categorystore";
-import { useHiddenStore } from "../stores/hiddenstore";
-import { useCategoryStore2 } from "@/stores/categorystore2";
 import axios from "axios";
 
+import { useCategoriesStore } from "../stores/categorystore";
+import { useSelectedCategoryStore } from "../stores/categorystoreselected";
+import { useHiddenStore } from "../stores/hiddenstore";
+
+interface Category {
+  id: string | number;
+  name: string;
+}
+
 export default function Nav() {
-  const [categories, setCategories] = useState([]);
-  const selectedCategory = useCategoryStore((state) => state.selectedCategory);
-  const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
+  const [loading, setLoading] = useState(false);
+  const categories = useCategoriesStore((state) => state.categories);
+  const setCategories = useCategoriesStore((state) => state.setCategories);
+
+  const selectedCategory = useSelectedCategoryStore((state) => state.selectedCategory);
+  const setSelectedCategory = useSelectedCategoryStore((state) => state.setSelectedCategory);
+
   const hidden = useHiddenStore((state) => state.hidden);
   const setHidden = useHiddenStore((state) => state.setHidden);
-  const setCategoryStore2 = useCategoryStore2((state)=> state.setCategories)
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    async function fetchCategories() {
+      setLoading(true);
       try {
-        const response = await axios.get("http://localhost:3001/category");
+        const response = await axios.get<Category[]>("http://localhost:3001/category");
         setCategories(response.data);
-        setCategoryStore2(response.data)
-        
       } catch (error) {
         console.error("Erro ao buscar categorias:", error);
+      } finally {
+        setLoading(false);
       }
-    };
+    }
 
     fetchCategories();
-  }, []);
+  }, [setCategories]);
+
+  if (loading) return <p>Carregando categorias...</p>;
 
   return (
     <nav className="flex gap-4">
@@ -38,12 +50,12 @@ export default function Nav() {
               className="cursor-pointer"
               onClick={() => {
                 if (selectedCategory.id === category.id) {
-                  
                   setHidden(true);
-                  setSelectedCategory({ id: "", name: "" }); 
-                } 
-                   setSelectedCategory(category);
+                  setSelectedCategory({ id: "", name: "" });
+                } else {
+                  setSelectedCategory(category);
                   if (hidden) setHidden(false);
+                }
               }}
             >
               {category.name}
