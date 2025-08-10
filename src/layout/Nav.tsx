@@ -1,4 +1,3 @@
-// Nav.tsx
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -8,8 +7,9 @@ import axios from "axios";
 
 export default function Nav() {
   const [categories, setCategories] = useState([]);
+  const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
-  const hidden = useHiddenStore((state) => state.hidden); // pega o valor atual
+  const hidden = useHiddenStore((state) => state.hidden);
   const setHidden = useHiddenStore((state) => state.setHidden);
 
   useEffect(() => {
@@ -33,8 +33,13 @@ export default function Nav() {
             <Button
               className="cursor-pointer"
               onClick={() => {
-                setSelectedCategory(category);
-                setHidden(!hidden);
+                if (selectedCategory.id === category.id) {
+                  
+                  setHidden(true);
+                  setSelectedCategory({ id: "", name: "" }); 
+                } 
+                   setSelectedCategory(category);
+                  if (hidden) setHidden(false);
               }}
             >
               {category.name}

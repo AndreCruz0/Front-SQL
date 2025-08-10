@@ -1,17 +1,17 @@
-// src/stores/categoryStore.ts
-import { create } from "zustand";
+// No store de categorias
+import {create} from "zustand";
 
 interface Category {
-  id: number;
+  id: string;
   name: string;
 }
 
 interface CategoryStore {
-  selectedCategory: Category | null;
+  selectedCategory: Category; 
   setSelectedCategory: (category: Category) => void;
 }
 
 export const useCategoryStore = create<CategoryStore>((set) => ({
-  selectedCategory: null,
+  selectedCategory: { id: "", name: "" },
   setSelectedCategory: (category) => set({ selectedCategory: category }),
 }));

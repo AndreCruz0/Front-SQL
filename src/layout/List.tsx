@@ -9,104 +9,118 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useCategoryStore } from "../stores/categorystore";
 import { useHiddenStore } from "../stores/hiddenstore";
+import { updateProductsBulk } from '../services/updateProduct.service'; // criar essa função no service
 
 export default function List() {
-  const hidden = useHiddenStore(state => state.hidden);
-    
+  const hidden = useHiddenStore((state) => state.hidden);
+  const selectedCategory = useCategoryStore((state) => state.selectedCategory);
+
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    if (!hidden) {
-      async function fetchProducts() {
-        try {
-          const res = await axios.get("http://localhost:3001/products/");
-          setProducts(res.data.data);
-        } catch (error) {
-          console.error("Erro ao buscar produtos:", error);
-        }
+    async function fetchProducts() {
+      if (!selectedCategory?.id) return;
+
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/products/${selectedCategory.id}`
+        );
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
       }
-      fetchProducts();
     }
-  }, [hidden]);
+    fetchProducts();
+  }, [selectedCategory]);
 
-  if (!hidden) return null;
+  if (hidden) return null;
 
-  const handleSubmit = async (e) => {
+  function handleChange(index, field, value) {
+    setProducts((prev) => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], [field]: field === "name" ? value : Number(value) };
+      return copy;
+    });
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
-    const updatedProducts = products.map((product) => ({
-      id: product.id,
-      name: formData.get(`name-${product.id}`),
-      qty: Number(formData.get(`qty-${product.id}`)),
-      price: Number(formData.get(`price-${product.id}`)),
-    }));
 
     try {
-      for (const p of updatedProducts) {
-        await axios.put(`http://localhost:3001/products/update/${p.id}`, {
-          name: p.name,
-          qty: p.qty,
-          price: p.price,
-        });
-      }
-      alert("Produtos atualizados com sucesso!");
-      setProducts(updatedProducts);
+      const res = await updateProductsBulk(products);
+      alert(res.message);
     } catch (error) {
-      console.error("Erro ao atualizar produtos", error);
+      alert(error.message || "Erro ao atualizar produtos");
     }
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Table>
-        <TableCaption>Lista de produtos</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Qty</TableHead>
-            <TableHead>Price</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {products.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell>{product.id}</TableCell>
-              <TableCell>
-                <Input
-                  name={`name-${product.id}`}
-                  defaultValue={product.name}
-                  className="border p-1"
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  type="number"
-                  name={`qty-${product.id}`}
-                  defaultValue={product.qty}
-                  className="border p-1 w-20"
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  type="number"
-                  step="0.01"
-                  name={`price-${product.id}`}
-                  defaultValue={product.price}
-                  className="border p-1 w-24 text-right"
-                />
-              </TableCell>
+    <main>
+      <form onSubmit={handleSubmit}>
+        <Table>
+          <TableCaption>Produtos da categoria {selectedCategory?.name}</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Nome</TableHead>
+              <TableHead>Quantidade</TableHead>
+              <TableHead className="text-right">Preço</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="mt-4 text-right">
-        <Button type="submit">Salvar tudo</Button>
-      </div>
-    </form>
+          </TableHeader>
+          <TableBody>
+            {products.length > 0 ? (
+              products.map((product, index) => (
+                <TableRow key={product.id}>
+                  <TableCell>{product.id}</TableCell>
+                  <TableCell>
+                    <input
+                      name={`name-${product.id}`}
+                      value={product.name}
+                      onChange={(e) => handleChange(index, "name", e.target.value)}
+                      required
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <input
+                      name={`qty-${product.id}`}
+                      type="number"
+                      value={product.qty}
+                      onChange={(e) => handleChange(index, "qty", e.target.value)}
+                      required
+                    />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <input
+                      name={`price-${product.id}`}
+                      type="number"
+                      step="0.01"
+                      value={product.price}
+                      onChange={(e) => handleChange(index, "price", e.target.value)}
+                      required
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center">
+                  Nenhum produto encontrado
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+
+        {products.length > 0 && (
+          <div className="mt-4 flex justify-end">
+            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+              Atualizar todos os produtos
+            </button>
+          </div>
+        )}
+      </form>
+    </main>
   );
 }
