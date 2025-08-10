@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useCategoryStore } from "../stores/categorystore";
 import { useHiddenStore } from "../stores/hiddenstore";
+import { useCategoryStore2 } from "@/stores/categorystore2";
 import axios from "axios";
 
 export default function Nav() {
@@ -11,12 +12,15 @@ export default function Nav() {
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
   const hidden = useHiddenStore((state) => state.hidden);
   const setHidden = useHiddenStore((state) => state.setHidden);
+  const setCategoryStore2 = useCategoryStore2((state)=> state.setCategories)
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get("http://localhost:3001/category");
         setCategories(response.data);
+        setCategoryStore2(response.data)
+        
       } catch (error) {
         console.error("Erro ao buscar categorias:", error);
       }

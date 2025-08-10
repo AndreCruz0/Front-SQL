@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {Button} from "@/components/ui/button"
 import { useCategoryStore } from "../stores/categorystore";
 import { useHiddenStore } from "../stores/hiddenstore";
 import { updateProductsBulk } from '../services/updateProduct.service'; // criar essa função no service
@@ -25,7 +26,7 @@ export default function List() {
 
       try {
         const response = await axios.get(
-          `http://localhost:3001/products/${selectedCategory.id}`
+          `http://localhost:3001/products/category/${selectedCategory.id}`
         );
         setProducts(response.data);
       } catch (error) {
@@ -115,9 +116,9 @@ export default function List() {
 
         {products.length > 0 && (
           <div className="mt-4 flex justify-end">
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+            <Button type="submit">
               Atualizar todos os produtos
-            </button>
+            </Button>
           </div>
         )}
       </form>
