@@ -1,50 +1,24 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useModalStore } from "@/stores/modalstore";
-import { useState, useEffect } from "react";
 import ProductSelect from "../components/EntryModalUi/ProductSelect";
 import QuantityInput from "../components/EntryModalUi/QuantityInput";
 import TypeSelect from "../components/EntryModalUi/TypeSelect";
-import { handleSubmit } from "@/services/handleSubmit.service";
-import { fetchProducts, Product } from "../services/transaction.service";
+import { useEntryModal } from "../hooks/useEntryModal";
 
 export default function EntryModal() {
   const setModalState = useModalStore((state) => state.setModalState);
-
-  const [products, setProducts] = useState<Product[]>([]);
-  const [productId, setProductId] = useState("");
-  const [qty, setQty] = useState("");
-  const [type, setType] = useState<"entrada" | "saida">("entrada");
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const prods = await fetchProducts();
-        setProducts(prods);
-      } catch {
-        alert("Erro ao carregar produtos!");
-      }
-    }
-    loadProducts();
-  }, []);
-
-  async function onSubmit(e: React.FormEvent) {
-    setError("");
-    await handleSubmit({
-      e,
-      productId,
-      qty,
-      type,
-      onSuccess() {
-        alert("Transação adicionada com sucesso!");
-        setModalState(null);
-      },
-      onError(msg) {
-        setError(msg);
-      },
-    });
-  }
+  const {
+    products,
+    productId,
+    setProductId,
+    qty,
+    setQty,
+    type,
+    setType,
+    error,
+    onSubmit,
+  } = useEntryModal(setModalState);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-accent/80">
