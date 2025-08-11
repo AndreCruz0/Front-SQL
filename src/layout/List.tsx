@@ -6,14 +6,15 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
+	TableCell,
 } from '@/components/ui/table';
 import { AnimatePresence } from 'framer-motion';
-import { useProductBulkEdit } from '../hooks/useProductBulkEdit';
-import { useSelectedCategoryStore } from '../stores/categorystoreselected';
-import { useHiddenStore } from '../stores/hiddenstore';
 import { EmptyState } from '../components/ListUi/EmptyState';
 import { ProductRow } from '../components/ListUi/ProductRow';
 import { ProductSkeleton } from '../components/ListUi/ProductSkeleton';
+import { useProductBulkEdit } from '../hooks/useProductBulkEdit';
+import { useSelectedCategoryStore } from '../stores/categorystoreselected';
+import { useHiddenStore } from '../stores/hiddenstore';
 
 export default function List() {
 	const hidden = useHiddenStore((state) => state.hidden);
@@ -43,8 +44,9 @@ export default function List() {
 								Produtos da categoria <strong>{selectedCategory?.name}</strong>
 							</TableCaption>
 
+							{/* Cabeçalho desktop escondido no mobile */}
 							<TableHeader>
-								<TableRow className="bg-gray-800">
+								<TableRow className="bg-gray-800 hidden sm:table-row">
 									<TableHead className="text-white">ID</TableHead>
 									<TableHead className="text-white">Nome</TableHead>
 									<TableHead className="text-white">Quantidade</TableHead>
@@ -53,7 +55,7 @@ export default function List() {
 							</TableHeader>
 
 							<TableBody>
-								<AnimatePresence mode="wait">
+								<AnimatePresence mode="popLayout">
 									{products.length > 0 ? (
 										products.map((product, index) => (
 											<ProductRow

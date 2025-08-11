@@ -5,15 +5,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCategories } from '../hooks/useCategories'; 
+import { useCategories } from '../hooks/useCategories';
 import { useSelectedCategoryStore } from '../stores/categorystoreselected';
 import { useHiddenStore } from '../stores/hiddenstore';
 
 export default function Nav() {
 	const { categories, loading } = useCategories();
 
-	const selectedCategory = useSelectedCategoryStore((state) => state.selectedCategory);
-	const setSelectedCategory = useSelectedCategoryStore((state) => state.setSelectedCategory);
+	const selectedCategory = useSelectedCategoryStore(
+		(state) => state.selectedCategory,
+	);
+	const setSelectedCategory = useSelectedCategoryStore(
+		(state) => state.setSelectedCategory,
+	);
 	const hidden = useHiddenStore((state) => state.hidden);
 	const setHidden = useHiddenStore((state) => state.setHidden);
 
@@ -35,7 +39,7 @@ export default function Nav() {
 
 	return (
 		<nav className="flex flex-wrap gap-4 my-4">
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="popLayout">
 				{categories.map((category) => (
 					<motion.div
 						key={category.id}
