@@ -50,7 +50,6 @@ export function ProductRow({ product, index, handleChange }: ProductRowProps) {
 				<span className="text-gray-400 hidden sm:inline">ID: </span>
 				{formattedId}
 			</TableCell>
-
 			<TableCell
 				className="
 					block sm:table-cell sm:px-3 mb-4 sm:mb-0
@@ -105,13 +104,13 @@ export function ProductRow({ product, index, handleChange }: ProductRowProps) {
 
 			<TableCell
 				className="
-					sm:text-right block sm:table-cell sm:px-3 mb-4 sm:mb-0
+					sm:text-right block sm:table-cell sm:px-3 mb-4  sm:mb-0
 				"
 				data-label="Preço"
 			>
 				<label
 					htmlFor={`price-${id}`}
-					className="block text-gray-400 text-xs mb-1 sm:hidden sm:text-right"
+					className="block text-gray-400 text-xs mb-1 sm:hidden sm:text-right "
 				>
 					Preço
 				</label>
@@ -119,7 +118,7 @@ export function ProductRow({ product, index, handleChange }: ProductRowProps) {
 					id={`price-${id}`}
 					className="w-full max-w-[100px] px-2 py-1 border border-gray-600 rounded-md
 						focus:outline-none focus:ring-2 focus:ring-gray-500
-						bg-gray-900 text-gray-100 sm:text-right"
+						bg-gray-900 text-gray-100 "
 					name={`price-${id}`}
 					type="number"
 					step="0.01"
