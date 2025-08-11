@@ -4,48 +4,18 @@ import {
 } from '@/animations/uiAnimations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import { useCategoriesStore } from '../stores/categorystore';
+import { useCategories } from '../hooks/useCategories'; 
 import { useSelectedCategoryStore } from '../stores/categorystoreselected';
 import { useHiddenStore } from '../stores/hiddenstore';
 
-interface Category {
-	id: string | number;
-	name: string;
-}
-
 export default function Nav() {
-	const [loading, setLoading] = useState(false);
-	const categories = useCategoriesStore((state) => state.categories);
-	const setCategories = useCategoriesStore((state) => state.setCategories);
-	const selectedCategory = useSelectedCategoryStore(
-		(state) => state.selectedCategory,
-	);
-	const setSelectedCategory = useSelectedCategoryStore(
-		(state) => state.setSelectedCategory,
-	);
+	const { categories, loading } = useCategories();
+
+	const selectedCategory = useSelectedCategoryStore((state) => state.selectedCategory);
+	const setSelectedCategory = useSelectedCategoryStore((state) => state.setSelectedCategory);
 	const hidden = useHiddenStore((state) => state.hidden);
 	const setHidden = useHiddenStore((state) => state.setHidden);
-
-	useEffect(() => {
-		async function fetchCategories() {
-			setLoading(true);
-			try {
-				const response = await axios.get<Category[]>(
-					'http://localhost:3001/category',
-				);
-				setCategories(response.data);
-			} catch (error: any) {
-				toast.error(`Erro ao buscar categorias: ${error.message || error}`);
-			} finally {
-				setLoading(false);
-			}
-		}
-		fetchCategories();
-	}, [setCategories]);
 
 	if (loading) {
 		return (
