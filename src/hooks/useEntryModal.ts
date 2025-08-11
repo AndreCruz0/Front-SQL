@@ -6,6 +6,7 @@ import {
 } from '@/services/transaction.service';
 // useEntryModal.ts
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export function useEntryModal(setModalState: (state: null) => void) {
 	const [products, setProducts] = useState<Product[]>([]);
@@ -20,7 +21,7 @@ export function useEntryModal(setModalState: (state: null) => void) {
 				const prods = await fetchProducts();
 				setProducts(prods);
 			} catch {
-				alert('Erro ao carregar produtos!');
+				toast.error('Erro ao carregar produtos!');
 			}
 		}
 		loadProducts();
@@ -56,7 +57,7 @@ export function useEntryModal(setModalState: (state: null) => void) {
 				qty: Number(qty),
 				type,
 			});
-			alert('Transação adicionada com sucesso!');
+			toast.success('Transação adicionada com sucesso!');
 			setModalState(null);
 		} catch {
 			setError('Erro ao adicionar transação!');

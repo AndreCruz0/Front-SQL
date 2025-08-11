@@ -1,6 +1,7 @@
 import { handleErrorMessage } from '@/utils/errorUtils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
 	type Product,
 	updateProductsBulk,
@@ -11,7 +12,7 @@ export function useProductBulkEdit(selectedCategory: {
 	name?: string;
 }) {
 	const [products, setProducts] = useState<Product[]>([]);
-
+	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		if (!selectedCategory?.id) {
 			setProducts([]);
@@ -25,7 +26,7 @@ export function useProductBulkEdit(selectedCategory: {
 				);
 				setProducts(response.data);
 			} catch (error: unknown) {
-				console.error('Erro ao buscar produtos:', error);
+				toast.error(`Erro ao buscar produtos: ${error}`);
 			}
 		}
 
@@ -46,14 +47,22 @@ export function useProductBulkEdit(selectedCategory: {
 	async function handleSubmit() {
 		try {
 			const res = await updateProductsBulk(products);
-			alert(res.message);
+			toast.success(res.message);
 		} catch (error: unknown) {
-			alert(handleErrorMessage(error) || 'Erro ao atualizar produtos');
+			toast.error(handleErrorMessage(error) || 'Erro ao atualizar produtos');
 		}
 	}
 
+	useEffect(() => {
+		setLoading(true);
+		const timer = setTimeout(() => setLoading(false), 500);
+		return () => clearTimeout(timer);
+	}, [selectedCategory]);
+
 	return {
 		products,
+		setLoading,
+		loading,
 		handleChange,
 		handleSubmit,
 	};
