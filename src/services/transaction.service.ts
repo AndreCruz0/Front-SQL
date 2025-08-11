@@ -23,5 +23,5 @@ export async function postTransaction(data: {
 	qty: number;
 	type: 'entrada' | 'saida';
 }) {
-	await axios.post('http://localhost:5000/transactions', data);
+	await axios.post('http://localhost:5000/transactions/create', data);
 }
