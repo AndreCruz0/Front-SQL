@@ -1,15 +1,19 @@
 import { create } from 'zustand';
 
-// Exemplo do modalstore.ts (Zustand)
-type ModalState = null | 'createCategory' | 'registerProduct' | 'entrada';
+export type ModalState =
+	| 'entrada'
+	| 'saida'
+	| 'categoria'
+	| 'createCategory'
+	| 'registerProduct'
+	| null;
 
 interface ModalStore {
-  modalState: ModalState;
-  setModalState: (state: ModalState) => void;
+	modalState: ModalState;
+	setModalState: (state: ModalState) => void;
 }
 
 export const useModalStore = create<ModalStore>((set) => ({
-  modalState: null,
-  setModalState: (state) => set({ modalState: state }),
+	modalState: null,
+	setModalState: (state) => set({ modalState: state }),
 }));
-

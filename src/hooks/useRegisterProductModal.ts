@@ -1,69 +1,78 @@
-import { useState, useEffect } from 'react';
+import type { ModalState } from '@/stores/modalstore';
 import axios from 'axios';
-
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 interface Category {
-  id: number;
-  name: string;
+	id: number;
+	name: string;
 }
 
-export function useRegisterProductModal(setModalState: (state: any) => void) {
-  const [name, setName] = useState('');
-  const [categoryId, setCategoryId] = useState<number | null>(null);
-  const [price, setPrice] = useState<number | ''>('');
-  const [qty, setQty] = useState<number | ''>('');
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+export function useRegisterProductModal(
+	setModalState: (state: ModalState) => void,
+) {
+	const [name, setName] = useState('');
+	const [categoryId, setCategoryId] = useState<number | null>(null);
+	const [price, setPrice] = useState<number | ''>('');
+	const [qty, setQty] = useState<number | ''>('');
+	const [categories, setCategories] = useState<Category[]>([]);
+	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Busca categorias para select
-    axios
-      .get('http://localhost:3001/category/') 
-      .then((res) => setCategories(res.data))
-      .catch(() => setCategories([]));
-  }, []);
+	useEffect(() => {
+		axios
+			.get('http://localhost:3001/category/list')
+			.then((res) => setCategories(res.data))
+			.catch(() => setCategories([]));
+	}, []);
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
+	async function onSubmit(e: React.FormEvent) {
+		e.preventDefault();
+		setError(null);
 
-    if (!categoryId) {
-      setError('Selecione uma categoria');
-      return;
-    }
-    if (!name || !price || !qty) {
-      setError('Preencha todos os campos');
-      return;
-    }
+		if (!categoryId) {
+			const msg = 'Selecione uma categoria';
+			setError(msg);
+			toast.error(msg);
+			return;
+		}
+		if (!name || !price || !qty) {
+			const msg = 'Preencha todos os campos';
+			setError(msg);
+			toast.error(msg);
+			return;
+		}
 
-    setLoading(true);
-    try {
-      await axios.post('http://localhost:3001/products/register', {
-        name,
-        category_id: categoryId,
-        price,
-        qty,
-      });
-      setModalState(null);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao cadastrar produto');
-    } finally {
-      setLoading(false);
-    }
-  }
+		setLoading(true);
+		try {
+			await axios.post('http://localhost:3001/products/register', {
+				name,
+				category_id: categoryId,
+				price,
+				qty,
+			});
+			toast.success('Produto cadastrado com sucesso!');
+			setModalState(null);
+		} catch (err: unknown) {
+			if (axios.isAxiosError(err)) {
+				const message = err.response?.data?.message || 'Erro padrão';
+				setError(message);
+			}
+			setError('Erro inesperado');
+		}
+	}
 
-  return {
-    name,
-    setName,
-    categoryId,
-    setCategoryId,
-    price,
-    setPrice,
-    qty,
-    setQty,
-    categories,
-    error,
-    loading,
-    onSubmit,
-  };
+	return {
+		name,
+		setName,
+		categoryId,
+		setCategoryId,
+		price,
+		setPrice,
+		qty,
+		setQty,
+		categories,
+		error,
+		loading,
+		onSubmit,
+	};
 }
