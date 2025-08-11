@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+      "biome.json" : true,
+      "node_modules":true,
+      "components.json":true,
+      "tsconfig.json":true,
+      "vite.config.ts":true,
+      "env.devolopment":true,
+      ".env":true,
+      "package-lock.json":true
+    }
+}
