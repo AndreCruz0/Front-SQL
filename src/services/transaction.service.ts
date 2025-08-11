@@ -9,7 +9,7 @@ export interface Product {
 const API_BASE_URL = 'http://localhost:3001';
 
 export async function fetchProducts(): Promise<Product[]> {
-	const res = await axios.get(`${API_BASE_URL}/products`);
+	const res = await axios.get(`${API_BASE_URL}/products/list`);
 	return res.data;
 }
 
