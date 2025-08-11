@@ -35,7 +35,7 @@ export function useRegisterProductModal(
 			toast.error(msg);
 			return;
 		}
-		if (!name || !price || !qty) {
+		if (!name || !price || qty !== 0 && !qty) {
 			const msg = 'Preencha todos os campos';
 			setError(msg);
 			toast.error(msg);
