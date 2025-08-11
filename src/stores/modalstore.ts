@@ -1,13 +1,15 @@
 import { create } from 'zustand';
 
-type ModalType = 'entrada' | 'saida' | null;
+// Exemplo do modalstore.ts (Zustand)
+type ModalState = null | 'createCategory' | 'registerProduct' | 'entrada';
 
 interface ModalStore {
-	modalState: ModalType;
-	setModalState: (state: ModalType) => void;
+  modalState: ModalState;
+  setModalState: (state: ModalState) => void;
 }
 
 export const useModalStore = create<ModalStore>((set) => ({
-	modalState: null,
-	setModalState: (state) => set({ modalState: state }),
+  modalState: null,
+  setModalState: (state) => set({ modalState: state }),
 }));
+
