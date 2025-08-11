@@ -1,8 +1,8 @@
+import { handleErrorMessage } from '@/utils/errorUtils';
+import { logger } from '@/utils/logger';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { handleErrorMessage } from '@/utils/errorUtils';
-import { logger } from '@/utils/logger';
 
 export interface Category {
 	id: string | number;
@@ -17,7 +17,9 @@ export function useCategories() {
 		async function fetchCategories() {
 			setLoading(true);
 			try {
-				const response = await axios.get<Category[]>('http://localhost:3001/category');
+				const response = await axios.get<Category[]>(
+					'http://localhost:3001/category',
+				);
 				setCategories(response.data);
 			} catch (error: unknown) {
 				const message = handleErrorMessage(error);

@@ -3,10 +3,10 @@ import {
 	Table,
 	TableBody,
 	TableCaption,
+	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
-	TableCell,
 } from '@/components/ui/table';
 import { AnimatePresence } from 'framer-motion';
 import { EmptyState } from '../components/ListUi/EmptyState';
