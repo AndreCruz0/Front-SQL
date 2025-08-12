@@ -2,8 +2,6 @@ import { create } from 'zustand';
 
 export type ModalState =
 	| 'entrada'
-	| 'saida'
-	| 'categoria'
 	| 'createCategory'
 	| 'registerProduct'
 	| null;

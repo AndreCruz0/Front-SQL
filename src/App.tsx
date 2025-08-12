@@ -10,6 +10,9 @@ import { useSelectedCategoryStore } from './stores/categorystoreselected';
 import { useHiddenStore } from './stores/hiddenstore';
 import { useModalStore } from './stores/modalstore';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { logger } from './utils/logger';
 
 export default function App() {
 	const hidden = useHiddenStore((state) => state.hidden);
@@ -19,6 +22,25 @@ export default function App() {
 
 	const modalState = useModalStore((state) => state.modalState);
 	const setModalState = useModalStore((state) => state.setModalState);
+	async function handleModalClose() {
+		try {
+			const res = await axios.get('http://localhost:3001/products/refreshTransactions');
+			
+			
+			if (res.status === 200) {
+				toast.success('Dados atualizados com sucesso!');
+				setModalState('entrada');
+			}else{
+				toast.error('Erro ao atualizar os dados');
+			}
+				
+			
+		} catch (err) {
+			toast.error('Não foi possível atualizar os dados');
+			logger.error(err);
+		}
+	}
+
 
 	return (
 		<main className="p-4 sm:p-6 min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
@@ -50,7 +72,7 @@ export default function App() {
 					</div>
 					<div>
 						<Button
-							onClick={() => setModalState('entrada')}
+							onClick={handleModalClose}
 							className="cursor-pointer whitespace-nowrap text-gray-100 font-semibold px-6 py-2 rounded-lg
                bg-gray-700 hover:bg-gray-600 transition-colors duration-300"
 						>

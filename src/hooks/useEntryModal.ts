@@ -7,6 +7,7 @@ import {
 // useEntryModal.ts
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 export function useEntryModal(setModalState: (state: null) => void) {
 	const [products, setProducts] = useState<Product[]>([]);
