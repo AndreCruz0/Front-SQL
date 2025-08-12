@@ -30,6 +30,7 @@ export default function List() {
 		<main className="overflow-auto mt-6">
 			<form
 				onSubmit={(e) => {
+				
 					e.preventDefault();
 					handleSubmit();
 				}}
