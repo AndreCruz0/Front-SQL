@@ -1,4 +1,3 @@
-// src/stores/categoryStore.ts
 import { create } from 'zustand';
 
 interface HiddenStore {

@@ -1,5 +1,5 @@
 import { easeInOut } from 'framer-motion';
-import { linear } from 'popmotion'; // observe que o nome é 'linear', não 'easeLinear'
+import { linear } from 'popmotion';
 
 export const skeletonVariants = {
 	loading: {

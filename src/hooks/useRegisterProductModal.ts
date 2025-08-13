@@ -18,11 +18,13 @@ export function useRegisterProductModal(
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:3001/categories/list')
-			.then((res) => setCategories(res.data))
-			.catch(() => setCategories([]));
+	useEffect( () => {
+		async function sexo(){
+			const response = await axios.get('http://localhost:3001/categories/list')
+			setCategories(response.data)
+		}
+			
+			sexo()
 	}, []);
 
 	async function onSubmit(e: React.FormEvent) {
@@ -52,6 +54,7 @@ export function useRegisterProductModal(
 			});
 			toast.success('Produto cadastrado com sucesso!');
 			setModalState(null);
+			
 		} catch (err: unknown) {
 			if (axios.isAxiosError(err)) {
 				const message = err.response?.data?.message || 'Erro padrão';

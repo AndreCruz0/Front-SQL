@@ -62,7 +62,7 @@ export function useProductBulkEdit(selectedCategory: {
 
   function isEdited(product: Product) {
     const original = originalMap[product.id];
-    if (!original) return false; 
+  
     return (
       product.name !== original.name ||
       product.qty !== original.qty ||

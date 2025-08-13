@@ -5,21 +5,21 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCategories } from '../hooks/useCategories';
+import { useCategoriesStore } from '../stores/categorystore'
+import { useEffect } from 'react';
 import { useSelectedCategoryStore } from '../stores/categorystoreselected';
 import { useHiddenStore } from '../stores/hiddenstore';
 
 export default function Nav() {
-	const { categories, loading } = useCategories();
-
-	const selectedCategory = useSelectedCategoryStore(
-		(state) => state.selectedCategory,
-	);
-	const setSelectedCategory = useSelectedCategoryStore(
-		(state) => state.setSelectedCategory,
-	);
+	const { categories, loading, fetchCategories } = useCategoriesStore();
+	const selectedCategory = useSelectedCategoryStore((state) => state.selectedCategory);
+	const setSelectedCategory = useSelectedCategoryStore((state) => state.setSelectedCategory);
 	const hidden = useHiddenStore((state) => state.hidden);
 	const setHidden = useHiddenStore((state) => state.setHidden);
+
+	useEffect(() => {
+		fetchCategories();
+	}, [fetchCategories]);
 
 	if (loading) {
 		return (
@@ -52,12 +52,11 @@ export default function Nav() {
 						<Card className="flex-shrink-0 shadow-md rounded-xl border border-gray-700 bg-gray-800">
 							<CardContent>
 								<Button
-									className={`cursor-pointer whitespace-nowrap text-gray-100 font-semibold px-6 py-2 rounded-lg 
-                    ${
-											selectedCategory.id === category.id
-												? 'bg-gray-700 border border-gray-600'
-												: 'bg-gray-800 hover:bg-gray-700'
-										}`}
+									className={`cursor-pointer whitespace-nowrap text-gray-100 font-semibold px-6 py-2 rounded-lg ${
+										selectedCategory.id === category.id
+											? 'bg-gray-700 border border-gray-600'
+											: 'bg-gray-800 hover:bg-gray-700'
+									}`}
 									onClick={() => {
 										if (selectedCategory.id === category.id) {
 											setHidden(true);

@@ -45,7 +45,6 @@ export default function List() {
 								Produtos da categoria <strong>{selectedCategory?.name}</strong>
 							</TableCaption>
 
-							{/* Cabeçalho desktop escondido no mobile */}
 							<TableHeader>
 								<TableRow className="bg-gray-800 hidden sm:table-row">
 									<TableHead className="text-white">ID</TableHead>

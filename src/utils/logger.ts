@@ -1,5 +1,3 @@
-// src/utils/logger.ts
-
 type LogLevel = 'error' | 'warn' | 'info' | 'http' | 'debug';
 
 const levels: Record<LogLevel, number> = {
@@ -31,7 +29,6 @@ function shouldLog(level: LogLevel) {
 function formatMessage(level: LogLevel, message: unknown[]) {
 	const prefix = `[${level.toUpperCase()}]`;
 	if (typeof window === 'undefined') {
-		// Node.js (terminal) — usa cores ANSI
 		const ansiColors: Record<LogLevel, string> = {
 			error: '\x1b[31m', // vermelho
 			warn: '\x1b[33m', // amarelo

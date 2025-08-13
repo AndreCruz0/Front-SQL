@@ -12,5 +12,5 @@ export async function updateProductsBulk(products: Product[]) {
 		'http://localhost:3001/products/bulk-update',
 		products,
 	);
-	return response.data; // { message: string }
+	return response.data;
 }

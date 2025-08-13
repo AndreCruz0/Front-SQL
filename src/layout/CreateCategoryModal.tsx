@@ -4,7 +4,8 @@ import {
 	overlayVariants,
 } from '@/animations/modalAnimations';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card'
+
 import { useCreateCategoryModal } from '@/hooks/useCreateCategoryModal';
 import { useModalStore } from '@/stores/modalstore';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -12,7 +13,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 export default function CreateCategoryModal() {
 	const setModalState = useModalStore((state) => state.setModalState);
 	const { name, setName, error, loading, onSubmit } =
-		useCreateCategoryModal(setModalState);
+		useCreateCategoryModal(setModalState );
 
 	return (
 		<AnimatePresence>
