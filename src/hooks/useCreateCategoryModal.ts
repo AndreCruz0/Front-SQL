@@ -15,7 +15,7 @@ export function useCreateCategoryModal(
 		setError(null);
 		setLoading(true);
 		try {
-			await axios.post('http://localhost:3001/category/create', { name });
+			await axios.post('http://localhost:3001/categories/create', { name });
 			toast.success('Categoria criada com sucesso!');
 			setModalState(null);
 		} catch (err: unknown) {

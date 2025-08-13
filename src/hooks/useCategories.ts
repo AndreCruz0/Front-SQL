@@ -18,7 +18,7 @@ export function useCategories() {
 			setLoading(true);
 			try {
 				const response = await axios.get<Category[]>(
-					'http://localhost:3001/category/list',
+					'http://localhost:3001/categories/list',
 				);
 				setCategories(response.data);
 			} catch (error: unknown) {

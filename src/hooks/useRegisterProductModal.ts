@@ -20,7 +20,7 @@ export function useRegisterProductModal(
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:3001/category/list')
+			.get('http://localhost:3001/categories/list')
 			.then((res) => setCategories(res.data))
 			.catch(() => setCategories([]));
 	}, []);

@@ -1,6 +1,6 @@
 import { handleErrorMessage } from '@/utils/errorUtils';
 import axios from 'axios';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import {
   type Product,
@@ -12,12 +12,22 @@ export function useProductBulkEdit(selectedCategory: {
   name?: string;
 }) {
   const [products, setProducts] = useState<Product[]>([]);
+  const [originalProducts, setOriginalProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Função para buscar produtos (refetch)
+
+  const originalMap = useMemo(() => {
+    const map: Record<string | number, Product> = {};
+    originalProducts.forEach((p) => {
+      map[p.id] = p;
+    });
+    return map;
+  }, [originalProducts]);
+
   const fetchProducts = useCallback(async () => {
     if (!selectedCategory?.id) {
       setProducts([]);
+      setOriginalProducts([]);
       return;
     }
     try {
@@ -26,6 +36,7 @@ export function useProductBulkEdit(selectedCategory: {
         `http://localhost:3001/products/category/${selectedCategory.id}`,
       );
       setProducts(response.data);
+      setOriginalProducts(response.data); 
     } catch (error: unknown) {
       toast.error(`Erro ao buscar produtos: ${error}`);
     } finally {
@@ -48,12 +59,30 @@ export function useProductBulkEdit(selectedCategory: {
     });
   }
 
+
+  function isEdited(product: Product) {
+    const original = originalMap[product.id];
+    if (!original) return false; 
+    return (
+      product.name !== original.name ||
+      product.qty !== original.qty ||
+      product.price !== original.price
+    );
+  }
+
   async function handleSubmit() {
     try {
-      const res = await updateProductsBulk(products);
+     
+      const editedProducts = products.filter(isEdited);
+
+      if (editedProducts.length === 0) {
+        toast.info('Nenhum produto foi alterado');
+        return;
+      }
+
+      const res = await updateProductsBulk(editedProducts);
       toast.success(res.message);
-      // Recarrega a lista depois de salvar
-      await fetchProducts();
+      await fetchProducts(); 
     } catch (error: unknown) {
       toast.error(handleErrorMessage(error) || 'Erro ao atualizar produtos');
     }
@@ -64,6 +93,6 @@ export function useProductBulkEdit(selectedCategory: {
     loading,
     handleChange,
     handleSubmit,
-    refetch: fetchProducts, 
+    refetch: fetchProducts,
   };
 }
