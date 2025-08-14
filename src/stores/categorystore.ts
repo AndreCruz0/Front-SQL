@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import axios from 'axios';
 import { handleErrorMessage } from '@/utils/errorUtils';
-import { logger } from '@/utils/logger';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { create } from 'zustand';
 
 interface Category {
 	id: string | number;
@@ -22,11 +22,13 @@ export const useCategoriesStore = create<CategoriesStore>((set) => ({
 	fetchCategories: async () => {
 		set({ loading: true });
 		try {
-			const res = await axios.get<Category[]>('http://localhost:3001/categories/list');
+			const res = await axios.get<Category[]>(
+				'http://localhost:3001/categories/list',
+			);
 			set({ categories: res.data });
 		} catch (error: unknown) {
 			const message = handleErrorMessage(error);
-			logger.error(`Erro ao buscar categorias: ${message}`);
+			toast.error(`Erro ao buscar categorias: ${message}`);
 		} finally {
 			set({ loading: false });
 		}

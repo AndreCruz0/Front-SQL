@@ -5,15 +5,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCategoriesStore } from '../stores/categorystore'
 import { useEffect } from 'react';
+import { useCategoriesStore } from '../stores/categorystore';
 import { useSelectedCategoryStore } from '../stores/categorystoreselected';
 import { useHiddenStore } from '../stores/hiddenstore';
 
 export default function Nav() {
 	const { categories, loading, fetchCategories } = useCategoriesStore();
-	const selectedCategory = useSelectedCategoryStore((state) => state.selectedCategory);
-	const setSelectedCategory = useSelectedCategoryStore((state) => state.setSelectedCategory);
+	const selectedCategory = useSelectedCategoryStore(
+		(state) => state.selectedCategory,
+	);
+	const setSelectedCategory = useSelectedCategoryStore(
+		(state) => state.setSelectedCategory,
+	);
 	const hidden = useHiddenStore((state) => state.hidden);
 	const setHidden = useHiddenStore((state) => state.setHidden);
 

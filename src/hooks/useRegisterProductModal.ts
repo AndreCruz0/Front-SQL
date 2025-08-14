@@ -1,4 +1,5 @@
 import type { ModalState } from '@/stores/modalstore';
+import { handleErrorMessage } from '@/utils/errorUtils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -18,13 +19,13 @@ export function useRegisterProductModal(
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
-	useEffect( () => {
-		async function sexo(){
-			const response = await axios.get('http://localhost:3001/categories/list')
-			setCategories(response.data)
+	useEffect(() => {
+		async function fetchCategories() {
+			const response = await axios.get('http://localhost:3001/categories/list');
+			setCategories(response.data);
 		}
-			
-			sexo()
+
+		fetchCategories();
 	}, []);
 
 	async function onSubmit(e: React.FormEvent) {
@@ -37,7 +38,7 @@ export function useRegisterProductModal(
 			toast.error(msg);
 			return;
 		}
-		if (!name || !price || qty !== 0 && !qty) {
+		if (!name || !price || (qty !== 0 && !qty)) {
 			const msg = 'Preencha todos os campos';
 			setError(msg);
 			toast.error(msg);
@@ -54,13 +55,11 @@ export function useRegisterProductModal(
 			});
 			toast.success('Produto cadastrado com sucesso!');
 			setModalState(null);
-			
 		} catch (err: unknown) {
-			if (axios.isAxiosError(err)) {
-				const message = err.response?.data?.message || 'Erro padrão';
-				setError(message);
-			}
-			setError('Erro inesperado');
+			const message = handleErrorMessage(err);
+			setError(message);
+			toast.error(message);
+			setModalState(null);
 		}
 	}
 

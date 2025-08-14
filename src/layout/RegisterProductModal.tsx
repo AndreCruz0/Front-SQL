@@ -97,7 +97,6 @@ export default function RegisterProductModal() {
 									value={qty}
 									onChange={(e) => setQty(Number(e.target.value))}
 									min={0}
-								
 									className="w-full px-3 py-2 rounded-md border border-gray-600 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
 								/>
 

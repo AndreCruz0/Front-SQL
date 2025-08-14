@@ -12,7 +12,6 @@ import { useModalStore } from './stores/modalstore';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { logger } from './utils/logger';
 
 export default function App() {
 	const hidden = useHiddenStore((state) => state.hidden);
@@ -24,23 +23,20 @@ export default function App() {
 	const setModalState = useModalStore((state) => state.setModalState);
 	async function handleModalClose() {
 		try {
-			const res = await axios.get('http://localhost:3001/products/refreshTransactions');
-			
-			
+			const res = await axios.get(
+				'http://localhost:3001/products/refreshTransactions',
+			);
+
 			if (res.status === 200) {
 				toast.success('Dados atualizados com sucesso!');
 				setModalState('entrada');
-			}else{
+			} else {
 				toast.error('Erro ao atualizar os dados');
 			}
-				
-			
 		} catch (err) {
 			toast.error('Não foi possível atualizar os dados');
-			logger.error(err);
 		}
 	}
-
 
 	return (
 		<main className="p-4 sm:p-6 min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">

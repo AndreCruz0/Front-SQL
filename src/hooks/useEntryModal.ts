@@ -59,7 +59,8 @@ export function useEntryModal(setModalState: (state: null) => void) {
 			toast.success('Transação adicionada com sucesso!');
 			setModalState(null);
 		} catch {
-			setError('Erro ao adicionar transação!');
+			toast.error('Erro ao adicionar transação!');
+			setModalState(null);
 		}
 	}
 

@@ -30,7 +30,6 @@ export default function List() {
 		<main className="overflow-auto mt-6">
 			<form
 				onSubmit={(e) => {
-				
 					e.preventDefault();
 					handleSubmit();
 				}}
@@ -50,7 +49,9 @@ export default function List() {
 									<TableHead className="text-white">ID</TableHead>
 									<TableHead className="text-white">Nome</TableHead>
 									<TableHead className="text-white">Quantidade</TableHead>
-									<TableHead className="flex items-center justify-end text-white sm:mr-15">Preço</TableHead>
+									<TableHead className="flex items-center justify-end text-white sm:mr-15">
+										Preço
+									</TableHead>
 								</TableRow>
 							</TableHeader>
 

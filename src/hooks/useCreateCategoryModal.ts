@@ -4,7 +4,9 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useCategoriesStore } from '../stores/categorystore';
 
-export function useCreateCategoryModal(setModalState: (state: ModalState) => void) {
+export function useCreateCategoryModal(
+	setModalState: (state: ModalState) => void,
+) {
 	const [name, setName] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
