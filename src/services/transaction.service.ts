@@ -15,7 +15,7 @@ export async function fetchProducts(): Promise<Product[]> {
 
 export async function fetchProductStock(productId: number): Promise<number> {
 	const res = await axios.get(`${API_BASE_URL}/products/${productId}`);
-	return res.data[0].qty;
+	return res.data.qty || 0;
 }
 
 export async function postTransaction(data: {

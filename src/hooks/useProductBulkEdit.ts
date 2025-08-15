@@ -1,4 +1,5 @@
 import { handleErrorMessage } from '@/utils/errorUtils';
+import { logger } from '@/utils/logger';
 import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -6,7 +7,6 @@ import {
 	type Product,
 	updateProductsBulk,
 } from '../services/updateProduct.service';
-import { logger } from '@/utils/logger';
 export function useProductBulkEdit(selectedCategory: {
 	id?: number | string;
 	name?: string;
@@ -37,7 +37,7 @@ export function useProductBulkEdit(selectedCategory: {
 			setProducts(response.data);
 			setOriginalProducts(response.data);
 		} catch (error: unknown) {
-			toast.error(`Erro ao buscar produtos`)
+			toast.error(`Erro ao buscar produtos`);
 			logger.error(error, 'Erro ao buscar produtos');
 		} finally {
 			setLoading(false);
@@ -50,10 +50,10 @@ export function useProductBulkEdit(selectedCategory: {
 
 	function handleChange(index: number, field: keyof Product, value: string) {
 		setProducts((prev) => {
-			const productsCopy = [...prev];
+			const productsCopy = prev.map((p) => ({ ...p }));
 			productsCopy[index] = {
 				...productsCopy[index],
-				[field]: field === 'name' ? value : Number(value),
+				[field]: field === 'name' ? value : Number(value), // <--- aqui
 			};
 			return productsCopy;
 		});
@@ -71,7 +71,22 @@ export function useProductBulkEdit(selectedCategory: {
 
 	async function handleSubmit() {
 		try {
-			const editedProducts = products.filter(isEdited);
+			const editedProducts = products.filter(isEdited).map((product) => {
+				const original = originalMap[product.id];
+				return {
+					id: Number(product.id),
+					name: product.name,
+					category_id: Number(selectedCategory.id),
+					price:
+						product.price !== undefined
+							? Number(product.price)
+							: (original.price ?? 0),
+					qty:
+						product.qty !== undefined
+							? Number(product.qty)
+							: (original.qty ?? 0),
+				};
+			});
 
 			if (editedProducts.length === 0) {
 				toast.info('Nenhum produto foi alterado');

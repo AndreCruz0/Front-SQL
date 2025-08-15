@@ -1,9 +1,9 @@
 import type { ModalState } from '@/stores/modalstore';
+import { logger } from '@/utils/logger';
 import axios from 'axios';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useCategoriesStore } from '../stores/categorystore';
-import { logger } from '@/utils/logger';
 
 export function useCreateCategoryModal(
 	setModalState: (state: ModalState) => void,
