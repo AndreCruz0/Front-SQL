@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useCategoriesStore } from '../stores/categorystore';
+import { logger } from '@/utils/logger';
 
 export function useCreateCategoryModal(
 	setModalState: (state: ModalState) => void,
@@ -26,7 +27,7 @@ export function useCreateCategoryModal(
 			if (axios.isAxiosError(err)) {
 				const message = err.response?.data?.message || 'Erro padrão';
 				setError(message);
-				toast.error(message);
+				logger.error(message);
 			} else {
 				setError('Erro inesperado');
 				toast.error('Erro inesperado');

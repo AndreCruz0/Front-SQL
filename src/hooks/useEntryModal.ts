@@ -4,6 +4,7 @@ import {
 	fetchProducts,
 	postTransaction,
 } from '@/services/transaction.service';
+import { logger } from '@/utils/logger';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -19,8 +20,9 @@ export function useEntryModal(setModalState: (state: null) => void) {
 			try {
 				const prods = await fetchProducts();
 				setProducts(prods);
-			} catch {
+			} catch(err) {
 				toast.error('Erro ao carregar produtos!');
+				logger.error(err, 'Erro ao carregar produtos');
 			}
 		}
 		loadProducts();
@@ -45,7 +47,7 @@ export function useEntryModal(setModalState: (state: null) => void) {
 					return;
 				}
 			} catch {
-				setError('Erro ao verificar estoque do produto.');
+				toast.error('Erro ao verificar estoque do produto.');
 				return;
 			}
 		}
@@ -58,9 +60,10 @@ export function useEntryModal(setModalState: (state: null) => void) {
 			});
 			toast.success('Transação adicionada com sucesso!');
 			setModalState(null);
-		} catch {
+		} catch(err){
 			toast.error('Erro ao adicionar transação!');
 			setModalState(null);
+			logger.error(err, 'Erro ao adicionar transação');
 		}
 	}
 

@@ -1,5 +1,6 @@
 import type { ModalState } from '@/stores/modalstore';
 import { handleErrorMessage } from '@/utils/errorUtils';
+import { logger } from '@/utils/logger';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -58,7 +59,8 @@ export function useRegisterProductModal(
 		} catch (err: unknown) {
 			const message = handleErrorMessage(err);
 			setError(message);
-			toast.error(message);
+			toast.error('Erro ao cadastrar produto');
+			logger.error(err, 'Erro ao cadastrar produto');
 			setModalState(null);
 		}
 	}

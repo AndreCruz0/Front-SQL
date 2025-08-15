@@ -6,6 +6,7 @@ import {
 	type Product,
 	updateProductsBulk,
 } from '../services/updateProduct.service';
+import { logger } from '@/utils/logger';
 export function useProductBulkEdit(selectedCategory: {
 	id?: number | string;
 	name?: string;
@@ -36,7 +37,8 @@ export function useProductBulkEdit(selectedCategory: {
 			setProducts(response.data);
 			setOriginalProducts(response.data);
 		} catch (error: unknown) {
-			toast.error(`Erro ao buscar produtos: ${error}`);
+			toast.error(`Erro ao buscar produtos`)
+			logger.error(error, 'Erro ao buscar produtos');
 		} finally {
 			setLoading(false);
 		}
@@ -88,7 +90,8 @@ export function useProductBulkEdit(selectedCategory: {
 			toast.success(res.message);
 			await fetchProducts();
 		} catch (error: unknown) {
-			toast.error(handleErrorMessage(error) || 'Erro ao atualizar produtos');
+			toast.error('Erro ao atualizar produtos');
+			logger.error(error, 'Erro ao atualizar produtos');
 		}
 	}
 

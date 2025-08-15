@@ -12,6 +12,7 @@ import { useModalStore } from './stores/modalstore';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { logger } from './utils/logger';
 
 export default function App() {
 	const hidden = useHiddenStore((state) => state.hidden);
@@ -35,6 +36,7 @@ export default function App() {
 			}
 		} catch (err) {
 			toast.error('Não foi possível atualizar os dados');
+			logger.error(err, 'Erro ao atualizar os dados');
 		}
 	}
 

@@ -1,4 +1,5 @@
 import { handleErrorMessage } from '@/utils/errorUtils';
+import { logger } from '@/utils/logger';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { create } from 'zustand';
@@ -27,8 +28,8 @@ export const useCategoriesStore = create<CategoriesStore>((set) => ({
 			);
 			set({ categories: res.data });
 		} catch (error: unknown) {
-			const message = handleErrorMessage(error);
-			toast.error(`Erro ao buscar categorias: ${message}`);
+			logger.error(error, 'Erro ao buscar categorias');
+			toast.error(`Erro ao buscar categorias`);
 		} finally {
 			set({ loading: false });
 		}
